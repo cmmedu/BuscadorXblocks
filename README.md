@@ -12,7 +12,7 @@
 
 # English
   ## To use
-  1. Let the script `buscadorxblocks.py` at the directorio `vertical` on the exported course
+  1. Let the script `buscadorxblocks.py` at the directory `vertical` on the exported course
   2. Find the variable `nombre_xblock_buscado` and put the name of the xblock type to find
      ```
       nombre_xblock_buscado = 'dialogsquestionsxblock'
