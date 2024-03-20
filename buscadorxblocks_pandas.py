@@ -31,22 +31,31 @@ folder_path = './'  # Cambia esto a la ubicación de tu carpeta
 # Definir la palabra clave a buscar
 nombre_xblock_buscado = 'dialogsquestionsxblock'
 
-# Crear un DataFrame para almacenar los resultados
-data = {'Nombre': [], 'ID [' + nombre_xblock_buscado + '] encontrados': []}
+# Lista para almacenar los datos
+data = []
 
 # Recorre los archivos XML en la carpeta
+max_title_length = 0
 for filename in os.listdir(folder_path):
     if filename.endswith('.xml'):
         xml_file = os.path.join(folder_path, filename)
         title = extract_title(xml_file)
         if title is not None:
+            max_title_length = max(max_title_length, len(title))
             keyword_ids = find_keyword(xml_file, nombre_xblock_buscado)
             if keyword_ids:
-                data['Nombre'].append(title)
-                data['ID [' + nombre_xblock_buscado + '] encontrados'].append(', '.join(keyword_ids))
+                row_data = {'Nombre': title}
+                for i, keyword_id in enumerate(keyword_ids, start=1):
+                    row_data[f'ID {i} [{nombre_xblock_buscado}]'] = keyword_id
+                data.append(row_data)
 
-# Convertir el diccionario a un DataFrame de Pandas
+# Convertir la lista de diccionarios a un DataFrame de Pandas
 df = pd.DataFrame(data)
+
+# Ajustar el ancho de la columna 'Nombre' al tamaño del texto más largo
+column_widths = {'Nombre': max_title_length}
+df_widths = pd.DataFrame(column_widths, index=[0])
+df = pd.concat([df_widths, df], ignore_index=True)
 
 # Guardar el DataFrame en un archivo Excel
 df.to_excel('resultados.xlsx', index=False)
