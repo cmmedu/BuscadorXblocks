@@ -25,8 +25,11 @@ def find_keyword(xml_file, nombre_xblock_buscado):
                     keyword_found = True
     return keyword_ids
 
-# Carpeta donde se encuentran los archivos XML
-folder_path = './'  # Cambia esto a la ubicación de tu carpeta
+# Determinar la carpeta donde se encuentran los archivos XML
+if os.path.exists('vertical'):
+    folder_path = 'vertical/'
+else:
+    folder_path = './'
 
 # Definir la palabra clave a buscar
 nombre_xblock_buscado = 'dialogsquestionsxblock'
